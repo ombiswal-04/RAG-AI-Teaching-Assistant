@@ -72,10 +72,6 @@ RAG-based-ai/
 ├── README.md  
 └── .gitignore  
 
-Total lecture footage: ~320 MB  
-Currently processed: 2 / 15 videos  
-
----
 
 ## 🔍 Stage Breakdown
 
@@ -164,47 +160,6 @@ Language: Python 3.x
 - Debug-friendly (prompt & response saved)  
 - Clean separation of responsibilities  
 
----
-
-## ⚠️ Current Limitations
-
-- Only 2 / 15 videos processed  
-- No Ollama health-check  
-- No incremental embedding updates  
-- Single-turn Q&A only  
-- No relevance threshold filtering  
-- No requirements.txt yet  
-
----
-
-## 🚀 Recommended Improvements
-
-High Priority:
-- Process all 15 videos  
-- Add requirements.txt  
-- Add Ollama connectivity check  
-
-Medium Priority:
-- Add similarity threshold filtering  
-- Support incremental embedding updates  
-- Add simple CLI or Web UI  
-
-Nice to Have:
-- Multi-turn conversation support  
-- FastAPI or Gradio interface  
-- Vector database (FAISS) for scaling  
-
----
-
-## 📊 Completion Status
-
-Video → MP3          ✅ Complete  
-MP3 → JSON           ⚠ Partial (2/15)  
-JSON → Embeddings    ⚠ Partial  
-Query → Answer       ✅ Functional  
-
----
-
 ## 🎯 What This Project Demonstrates
 
 - Practical RAG implementation  
@@ -214,12 +169,3 @@ Query → Answer       ✅ Functional
 - System design thinking  
 - Privacy-focused AI architecture  
 - Resource-aware ML engineering  
-
----
-
-This project serves as a foundation for building:
-
-- AI Teaching Assistants  
-- Private Knowledge Systems  
-- Offline AI Applications  
-- Educational RAG Systems  
