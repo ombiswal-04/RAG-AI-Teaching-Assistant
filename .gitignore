@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+
+# Large data folders
+audios/
+videos/
+jsons/
+
+# Generated files
+embeddings.joblib
+embeddings.csv
+prompt.txt
+response.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+.vscode/
+
+unused/
