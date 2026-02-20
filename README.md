@@ -1,102 +1,225 @@
-# 👨‍💻 Your Name
+# 🎓 RAG AI Teaching Assistant (Fully Local)
 
-**B.Tech Computer Science & Engineering**
+A fully local, end-to-end Retrieval-Augmented Generation (RAG) pipeline designed as an AI teaching assistant for the Sigma Web Development course.
 
-> Passionate about building practical, grounded AI systems — locally run, privacy-respecting, and production-minded.
+Students submit natural language questions.  
+The system retrieves relevant lecture transcript segments and generates a grounded answer citing:
 
-[![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
-[![Ollama](https://img.shields.io/badge/Ollama-000000?style=flat&logo=ollama&logoColor=white)](https://ollama.com)
-[![Whisper](https://img.shields.io/badge/Whisper-412991?style=flat&logo=openai&logoColor=white)](https://openai.com/whisper)
-[![Scikit-learn](https://img.shields.io/badge/Scikit--learn-F7931E?style=flat&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
-[![NumPy](https://img.shields.io/badge/NumPy-013243?style=flat&logo=numpy&logoColor=white)](https://numpy.org)
+- 📺 Video number
+- ⏱ Timestamp range
 
-📧 your.email@example.com &nbsp;|&nbsp; 🔗 [GitHub](https://github.com/yourusername) &nbsp;|&nbsp; 🔗 [LinkedIn](https://linkedin.com/in/yourusername) &nbsp;|&nbsp; 📍 Your City, India
+Runs 100% offline — no cloud APIs required.
 
 ---
 
-## 🎯 Objective
+## 🧠 Executive Summary
 
-Motivated B.Tech CSE student with hands-on experience building **AI/ML pipelines**, **NLP systems**, and **local LLM applications**. I enjoy designing systems that are grounded, reliable, and fully self-hosted — no cloud dependency required.
+This project demonstrates a practical, modular RAG architecture built for:
 
----
+- Resource-constrained environments
+- Fully offline operation
+- Privacy-focused AI systems
+- Educational use cases
 
-## 🛠 Technical Skills
+It integrates:
 
-### Languages
-`Python` &nbsp; `JavaScript` &nbsp; `SQL` &nbsp; `HTML/CSS`
-
-### AI / ML
-`Whisper (ASR)` &nbsp; `BGE-M3 Embeddings` &nbsp; `Llama 3.2` &nbsp; `RAG Pipelines` &nbsp; `Cosine Similarity` &nbsp; `NLP`
-
-### Frameworks & Libraries
-`Scikit-learn` &nbsp; `Pandas` &nbsp; `NumPy` &nbsp; `Joblib` &nbsp; `Requests`
-
-### Tools & Platforms
-`Ollama` &nbsp; `Git` &nbsp; `GitHub` &nbsp; `VS Code`
+- Video processing
+- Whisper-based speech recognition
+- Dense vector retrieval (BGE-M3)
+- Cosine similarity search
+- Local LLM inference (Llama 3.2 via Ollama)
 
 ---
 
-## 🚀 Projects
+## 🏗 Pipeline Architecture
+
+Videos (.mp4)
+      ↓
+video_to_mp3.py
+      ↓
+MP3 audio files
+      ↓
+mp3_to_jsons.py (Whisper + Semantic Chunking)
+      ↓
+Chunked JSON transcripts
+      ↓
+pre_processesed_json.py (BGE-M3 Embeddings)
+      ↓
+embeddings.joblib (Vector Store)
+      ↓
+process_incoming.py
+      ↓
+Top-K Retrieval + Llama 3.2
+      ↓
+Timestamp-Grounded Answer
 
 ---
 
-### 🎓 RAG-Based AI Teaching Assistant
+## 📁 Project Structure
 
-> A fully local Retrieval-Augmented Generation pipeline for course-based semantic Q&A with timestamp-grounded answers.
+RAG-based-ai/
+├── Videos/                  # 15 raw lecture MP4 files  
+├── audios/                  # Converted MP3 files  
+├── jsons/                   # Whisper-generated transcripts  
+├── video_to_mp3.py          # Stage 1: Video → Audio  
+├── mp3_to_jsons.py          # Stage 2: Audio → Chunked JSON  
+├── pre_processesed_json.py  # Stage 3: JSON → Embeddings  
+├── process_incoming.py      # Stage 4: Query → Retrieval → Answer  
+├── embeddings.joblib        # Serialized embedding store  
+├── embeddings.csv           # CSV export (debug)  
+├── prompt.txt               # Last prompt (debug)  
+├── response.txt             # Last response (debug)  
+├── README.md  
+└── .gitignore  
 
-`Python` &nbsp; `Whisper` &nbsp; `BGE-M3` &nbsp; `Llama 3.2` &nbsp; `Ollama` &nbsp; `Scikit-learn` &nbsp; `Pandas`
-
-**What it does:**
-- Students ask natural language questions about lecture videos
-- System retrieves the most relevant transcript chunks
-- Llama 3.2 generates a grounded answer citing the exact video number and timestamp
-
-**Pipeline:**
-```
-Video (.mp4) → Audio (.mp3) → Whisper Transcription
-→ Window-based Semantic Chunking → BGE-M3 Embeddings
-→ Cosine Similarity Search → Llama 3.2 Response
-```
-
-**Key Contributions:**
-- 🔹 Designed end-to-end local pipeline — zero cloud API dependency
-- 🔹 Implemented **window-based chunk merging** (3 segments → 1 chunk) to improve embedding coherence
-- 🔹 Used **BGE-M3** for dense vector embeddings stored via `joblib`
-- 🔹 Engineered structured `Video / Time / Content` prompt format to reduce LLM hallucination
-- 🔹 Served **Llama 3.2** locally via **Ollama** on CPU
-
-**Example:**
-```
-Ask a Question: Where is the exercise given?
-
-→ In Video 13, between 481.04 and 482.04 seconds,
-  the exercise is introduced. Please refer to that section.
-```
-
-🔗 [View Repository](https://github.com/yourusername/RAG-based-ai)
+Total lecture footage: ~320 MB  
+Currently processed: 2 / 15 videos  
 
 ---
 
-## 🎓 Education
+## 🔍 Stage Breakdown
 
-**B.Tech — Computer Science & Engineering**
-Your University Name &nbsp;|&nbsp; Expected Graduation: 20XX &nbsp;|&nbsp; CGPA: X.X / 10
-
----
-
-## 📚 Relevant Coursework
-
-- Machine Learning &nbsp;|&nbsp; Natural Language Processing
-- Data Structures & Algorithms &nbsp;|&nbsp; DBMS
-- Computer Networks &nbsp;|&nbsp; Operating Systems
+### 1️⃣ Video → Audio
+File: video_to_mp3.py  
+- Converts .mp4 files to .mp3  
+- Uses ffmpeg  
+- Ensures correct numeric sorting (vid1–vid15)  
 
 ---
 
+### 2️⃣ Audio → Transcript + Semantic Chunking
+File: mp3_to_jsons.py  
 
-## 🔗 Links
+- Whisper model: small (CPU mode)  
+- Language: Hindi → Translated to English  
+- Timestamp-aware transcription  
+- Window-based chunk merging (3 segments per chunk)  
 
-| Platform | Link |
-|----------|------|
-| GitHub | [github.com/yourusername](https://github.com/yourusername) |
-| LinkedIn | [linkedin.com/in/yourusername](https://linkedin.com/in/yourusername) |
-| Project | [RAG-Based AI Teaching Assistant](https://github.com/yourusername/RAG-based-ai) |
+Why chunk merging?
+
+Raw Whisper segments are very short (1–3 seconds).  
+The system merges every 3 segments into one semantic chunk.
+
+This improves:
+- Semantic coherence  
+- Embedding quality  
+- Retrieval accuracy  
+
+---
+
+### 3️⃣ Transcript → Embeddings
+File: pre_processesed_json.py  
+
+- Embedding model: BGE-M3  
+- Served locally via Ollama  
+- Stored in Pandas DataFrame  
+- Serialized using joblib  
+
+Each row contains:
+- Video number  
+- Title  
+- Start time  
+- End time  
+- Text  
+- Embedding vector  
+
+---
+
+### 4️⃣ Query → Retrieval → Grounded Response
+File: process_incoming.py  
+
+Steps:
+1. User submits question  
+2. Question is embedded  
+3. Cosine similarity retrieves top 5 chunks  
+4. Structured prompt sent to Llama 3.2  
+5. Model generates timestamp-grounded answer  
+
+Example output:
+
+"The exercise is mentioned in video 13 at 481.04 – 482.04 seconds. Please watch that segment."
+
+---
+
+## 🧰 Technology Stack
+
+Video Processing: ffmpeg  
+Transcription: Whisper (small)  
+Embeddings: BGE-M3  
+LLM: Llama 3.2  
+Runtime: Ollama (localhost)  
+Retrieval: sklearn cosine_similarity  
+Storage: Pandas + joblib  
+Language: Python 3.x  
+
+---
+
+## 💪 Strengths
+
+- Fully offline & private  
+- Modular 4-stage pipeline  
+- Smart semantic chunking  
+- Timestamp-grounded responses  
+- Multilingual support (Hindi → English)  
+- Debug-friendly (prompt & response saved)  
+- Clean separation of responsibilities  
+
+---
+
+## ⚠️ Current Limitations
+
+- Only 2 / 15 videos processed  
+- No Ollama health-check  
+- No incremental embedding updates  
+- Single-turn Q&A only  
+- No relevance threshold filtering  
+- No requirements.txt yet  
+
+---
+
+## 🚀 Recommended Improvements
+
+High Priority:
+- Process all 15 videos  
+- Add requirements.txt  
+- Add Ollama connectivity check  
+
+Medium Priority:
+- Add similarity threshold filtering  
+- Support incremental embedding updates  
+- Add simple CLI or Web UI  
+
+Nice to Have:
+- Multi-turn conversation support  
+- FastAPI or Gradio interface  
+- Vector database (FAISS) for scaling  
+
+---
+
+## 📊 Completion Status
+
+Video → MP3          ✅ Complete  
+MP3 → JSON           ⚠ Partial (2/15)  
+JSON → Embeddings    ⚠ Partial  
+Query → Answer       ✅ Functional  
+
+---
+
+## 🎯 What This Project Demonstrates
+
+- Practical RAG implementation  
+- Local LLM deployment  
+- Applied NLP  
+- Embedding-based retrieval  
+- System design thinking  
+- Privacy-focused AI architecture  
+- Resource-aware ML engineering  
+
+---
+
+This project serves as a foundation for building:
+
+- AI Teaching Assistants  
+- Private Knowledge Systems  
+- Offline AI Applications  
+- Educational RAG Systems  
